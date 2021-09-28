@@ -1,0 +1,137 @@
+var nodeMaterial = new BABYLON.NodeMaterial("node");
+
+// InputBlock
+var Float = new BABYLON.InputBlock("Float");
+Float.value = 2.3;
+Float.min = 0;
+Float.max = 0;
+Float.isBoolean = false;
+Float.matrixMode = 0;
+Float.animationType = BABYLON.AnimatedInputBlockTypes.None;
+Float.isConstant = false;
+
+// MultiplyBlock
+var Multiply = new BABYLON.MultiplyBlock("Multiply");
+Multiply.visibleInInspector = false;
+ Multiply.visibleOnFrame = false;
+
+// TrigonometryBlock
+var Cos = new BABYLON.TrigonometryBlock("Cos");
+Cos.operation = BABYLON.TrigonometryBlockOperations.Cos;
+
+// MultiplyBlock
+var Multiply1 = new BABYLON.MultiplyBlock("Multiply");
+Multiply1.visibleInInspector = false;
+ Multiply1.visibleOnFrame = false;
+
+// InputBlock
+var Time = new BABYLON.InputBlock("Time");
+Time.value = 0;
+Time.min = 0;
+Time.max = 0;
+Time.isBoolean = false;
+Time.matrixMode = 0;
+Time.animationType = BABYLON.AnimatedInputBlockTypes.Time;
+Time.isConstant = false;
+
+// InputBlock
+var Float1 = new BABYLON.InputBlock("Float");
+Float1.value = 12;
+Float1.min = 0;
+Float1.max = 0;
+Float1.isBoolean = false;
+Float1.matrixMode = 0;
+Float1.animationType = BABYLON.AnimatedInputBlockTypes.None;
+Float1.isConstant = false;
+
+// AddBlock
+var Add = new BABYLON.AddBlock("Add");
+Add.visibleInInspector = false;
+ Add.visibleOnFrame = false;
+
+// VectorSplitterBlock
+var VectorSplitter = new BABYLON.VectorSplitterBlock("VectorSplitter");
+VectorSplitter.visibleInInspector = false;
+ VectorSplitter.visibleOnFrame = false;
+
+// InputBlock
+var position = new BABYLON.InputBlock("position");
+position.setAsAttribute("position");
+
+// VectorMergerBlock
+var VectorMerger = new BABYLON.VectorMergerBlock("VectorMerger");
+VectorMerger.visibleInInspector = false;
+ VectorMerger.visibleOnFrame = false;
+
+// TransformBlock
+var WorldPos = new BABYLON.TransformBlock("WorldPos");
+WorldPos.complementZ = 0;
+WorldPos.complementW = 1;
+
+// InputBlock
+var World = new BABYLON.InputBlock("World");
+World.setAsSystemValue(BABYLON.NodeMaterialSystemValues.World);
+
+// TransformBlock
+var WorldPosViewProjectionTransform = new BABYLON.TransformBlock("WorldPos * ViewProjectionTransform");
+WorldPosViewProjectionTransform.complementZ = 0;
+WorldPosViewProjectionTransform.complementW = 1;
+
+// InputBlock
+var ViewProjection = new BABYLON.InputBlock("ViewProjection");
+ViewProjection.setAsSystemValue(BABYLON.NodeMaterialSystemValues.ViewProjection);
+
+// VertexOutputBlock
+var VertexOutput = new BABYLON.VertexOutputBlock("VertexOutput");
+VertexOutput.visibleInInspector = false;
+ VertexOutput.visibleOnFrame = false;
+
+// InputBlock
+var uv = new BABYLON.InputBlock("uv");
+uv.setAsAttribute("uv");
+
+// TextureBlock
+var Texture = new BABYLON.TextureBlock("Texture");
+Texture.texture = new BABYLON.Texture("https://raw.githubusercontent.com/PatrickRyanMS/BabylonJStextures/master/Demos/underwater/assets/greySnapperMat_baseColor.png", null, false, false, 3);
+Texture.texture.wrapU = 1;
+Texture.texture.wrapV = 1;
+Texture.texture.uAng = 0;
+Texture.texture.vAng = 0;
+Texture.texture.wAng = 0;
+Texture.texture.uOffset = 0;
+Texture.texture.vOffset = 0;
+Texture.texture.uScale = 1;
+Texture.texture.vScale = 1;
+Texture.texture.coordinatesMode = 7;
+Texture.convertToGammaSpace = false;
+Texture.convertToLinearSpace = false;
+
+// FragmentOutputBlock
+var FragmentOutput = new BABYLON.FragmentOutputBlock("FragmentOutput");
+FragmentOutput.convertToGammaSpace = false;
+FragmentOutput.convertToLinearSpace = false;
+
+// Connections
+Float.output.connectTo(Multiply.left);
+Time.output.connectTo(Multiply1.left);
+Float1.output.connectTo(Multiply1.right);
+Multiply1.output.connectTo(Cos.input);
+Cos.output.connectTo(Multiply.right);
+Multiply.output.connectTo(Add.left);
+position.output.connectTo(VectorSplitter.xyzIn);
+VectorSplitter.x.connectTo(Add.right);
+Add.output.connectTo(VectorMerger.x);
+VectorSplitter.y.connectTo(VectorMerger.y);
+VectorSplitter.z.connectTo(VectorMerger.z);
+VectorMerger.xyz.connectTo(WorldPos.vector);
+World.output.connectTo(WorldPos.transform);
+WorldPos.output.connectTo(WorldPosViewProjectionTransform.vector);
+ViewProjection.output.connectTo(WorldPosViewProjectionTransform.transform);
+WorldPosViewProjectionTransform.output.connectTo(VertexOutput.vector);
+uv.output.connectTo(Texture.uv);
+Texture.rgb.connectTo(FragmentOutput.rgb);
+
+// Output nodes
+nodeMaterial.addOutputNode(VertexOutput);
+nodeMaterial.addOutputNode(FragmentOutput);
+nodeMaterial.build();

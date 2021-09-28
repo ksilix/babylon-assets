@@ -1,0 +1,775 @@
+#version 310 es
+// end extensions
+precision mediump float;
+precision highp int;
+
+void compiler_internal_AdjustInputSemantic(inout vec4 TempVariable)
+{
+#if HLSLCC_DX11ClipSpace
+	TempVariable.y = -TempVariable.y;
+	TempVariable.z = ( TempVariable.z + TempVariable.w ) / 2.0;
+#endif
+}
+
+void compiler_internal_AdjustOutputSemantic(inout vec4 Src)
+{
+#if HLSLCC_DX11ClipSpace
+	Src.y = -Src.y;
+	Src.z = ( 2.0 * Src.z ) - Src.w;
+#endif
+}
+
+bool compiler_internal_AdjustIsFrontFacing(bool isFrontFacing)
+{
+#if HLSLCC_DX11ClipSpace
+	return !isFrontFacing;
+#else
+	return isFrontFacing;
+#endif
+}
+uniform highp vec4 pc0_h[9];
+uniform highp vec4 pc2_h[1];
+uniform highp vec4 pc8_h[1];
+uniform highp vec4 pc4_h[4];
+uniform highp vec4 pc5_h[4];
+uniform highp vec4 pc6_h[4];
+uniform highp vec4 pc7_h[4];
+uniform vec4 pc3_m[5];
+uniform highp vec4 pc3_h[8];
+uniform ivec4 pc1_i[1];
+uniform vec4 pc9_m[10];
+uniform ivec4 pu_i[1];
+uniform highp samplerCube ps0;
+uniform highp sampler2D ps1;
+layout(location=0) in highp vec4 in_TEXCOORD10_centroid;
+layout(location=1) in highp vec4 in_TEXCOORD11_centroid;
+layout(location=2) in highp vec4 in_TEXCOORD8;
+layout(location=0) out vec4 out_Target0;
+void main()
+{
+	int i0;
+	i0 = pu_i[0].x;
+	int i1;
+	i1 = pc1_i[0].x;
+	highp vec3 v2;
+	v2.xyz = pc0_h[8].xyz;
+	highp float f3;
+	f3 = pc0_h[7].x;
+	highp vec3 v4;
+	v4.xyz = pc0_h[5].xyz;
+	highp float f5;
+	f5 = pc0_h[4].x;
+	highp float f6;
+	f6 = pc0_h[3].x;
+	highp vec3 v7;
+	v7.xyz = pc0_h[0].xyz;
+	highp vec4 v8;
+	v8.xyzw = gl_FragCoord;
+	v8.w = (1.0/(gl_FragCoord.w));
+	bool b9;
+	b9 = compiler_internal_AdjustIsFrontFacing(gl_FrontFacing);
+	vec4 v10;
+	float h11;
+	vec3 v12;
+	highp vec3 v13;
+	highp float f14;
+	highp float f15;
+	vec3 v16;
+	vec3 v17;
+	v17.xyz = in_TEXCOORD10_centroid.xyz;
+	v16.xyz = v17;
+	vec4 v18;
+	vec4 v19;
+	v19.xyzw = in_TEXCOORD11_centroid;
+	v18.xyzw = v19;
+	vec3 v20;
+	v20.xyz = (cross(v18.xyz,v16)*v18.www);
+	highp vec4 v21;
+	highp vec3 v22;
+	v22.xy = ((((gl_FragCoord.xy+(-pc0_h[1].xy))*pc0_h[2].zw)+vec2(-5.000000e-01,-5.000000e-01))*vec2(2.000000e+00,-2.000000e+00));
+	v22.z = gl_FragCoord.z;
+	highp vec4 v23;
+	v23.w = 1.000000e+00;
+	v23.xyz = v22;
+	v21.xyzw = (v23*v8.wwww);
+	vec3 v24;
+	float h25;
+	highp vec3 v26;
+	v26.xyz = (in_TEXCOORD8.xyz+(-v7));
+	vec3 v27;
+	v27.xyz = normalize((-in_TEXCOORD8.xyz));
+	v24.xyz = v27;
+	float h28;
+	h28 = (f5*pc2_h[0].w);
+	h25 = h28;
+	int i29;
+	i29 = (b9)?(1):(-1);
+	float h30;
+	h30 = float(i29);
+	h25 = (h25*h30);
+	vec3 v31;
+	vec3 v32;
+	v32.xyz = vec3(0.000000e+00,0.000000e+00,1.000000e+00);
+	highp vec3 v33;
+	v33.xyz = ((v18.xyz*v32.zzz)+((v20*v32.yyy)+(v16*v32.xxx)));
+	vec3 v34;
+	v34.xyz = normalize(v33);
+	v31.xyz = v34;
+	v31.xyz = (v31*vec3(h25));
+	vec3 v35;
+	v35.xyz = ((-v24)+((v31*vec3(dot(v31,v24)))*vec3(2.000000e+00,2.000000e+00,2.000000e+00)));
+	float h36;
+	h36 = abs((1.000000e+00+(-max(0.000000e+00,dot(v31,v24)))));
+	float h37;
+	h37 = pow(h36,pc9_m[5].x);
+	float h38;
+	h38 = ((h36<=0.000000e+00))?(0.000000e+00):(h37);
+	vec3 v39;
+	v39.xyz = (mix(pc9_m[1].xyz,pc9_m[0].xyz,vec3(((h38*pc9_m[5].z)+pc9_m[5].y)))*pc9_m[5].www);
+	float h40;
+	h40 = pow(v39.x,pc9_m[6].x);
+	float h41;
+	h41 = ((v39.x<=0.000000e+00))?(0.000000e+00):(h40);
+	float h42;
+	h42 = pow(v39.y,pc9_m[6].x);
+	float h43;
+	h43 = ((v39.y<=0.000000e+00))?(0.000000e+00):(h42);
+	vec2 v44;
+	v44.x = h41;
+	v44.y = h43;
+	float h45;
+	h45 = pow(v39.z,pc9_m[6].x);
+	float h46;
+	h46 = ((v39.z<=0.000000e+00))?(0.000000e+00):(h45);
+	vec3 v47;
+	v47.xy = v44;
+	v47.z = h46;
+	float h48;
+	h48 = pow(h36,pc9_m[7].x);
+	float h49;
+	h49 = ((h36<=0.000000e+00))?(0.000000e+00):(h48);
+	float h50;
+	h50 = mix(pc9_m[8].x,pc9_m[7].w,((h49*pc9_m[7].z)+pc9_m[7].y));
+	float h51;
+	h51 = pow(h50,pc9_m[6].x);
+	float h52;
+	h52 = ((h50<=0.000000e+00))?(0.000000e+00):(h51);
+	float h53;
+	h53 = pow(h36,pc9_m[8].y);
+	float h54;
+	h54 = ((h36<=0.000000e+00))?(0.000000e+00):(h53);
+	vec3 v55;
+	v55.xyz = (mix(pc9_m[4].xyz,pc9_m[3].xyz,vec3(((h54*pc9_m[8].w)+pc9_m[8].z)))*pc9_m[9].xxx);
+	float h56;
+	h56 = pow(v55.x,pc9_m[9].y);
+	float h57;
+	h57 = ((v55.x<=0.000000e+00))?(0.000000e+00):(h56);
+	float h58;
+	h58 = pow(v55.y,pc9_m[9].y);
+	float h59;
+	h59 = ((v55.y<=0.000000e+00))?(0.000000e+00):(h58);
+	vec2 v60;
+	v60.x = h57;
+	v60.y = h59;
+	float h61;
+	h61 = pow(v55.z,pc9_m[9].y);
+	float h62;
+	h62 = ((v55.z<=0.000000e+00))?(0.000000e+00):(h61);
+	vec3 v63;
+	v63.xy = v60;
+	v63.z = h62;
+	highp vec3 v64;
+	v64.xyz = clamp(pc9_m[2].xyz,vec3(0.000000e+00,0.000000e+00,0.000000e+00),vec3(1.000000e+00,1.000000e+00,1.000000e+00));
+	v13.xyz = v64;
+	highp float f65;
+	f65 = clamp(pc9_m[6].y,0.000000e+00,1.000000e+00);
+	f14 = f65;
+	highp float f66;
+	f66 = max(1.562500e-02,clamp(pc9_m[6].w,0.000000e+00,1.000000e+00));
+	f15 = f66;
+	float h67;
+	h67 = clamp((vec3(h52)+v63).x,0.000000e+00,1.000000e+00);
+	vec3 v68;
+	vec3 v69;
+	float h70;
+	highp float f71;
+	f71 = clamp(pc9_m[6].z,0.000000e+00,1.000000e+00);
+	float h72;
+	h72 = (8.000000e-02*f71);
+	h70 = h72;
+	vec3 v73;
+	v73.xyz = (v13+(-(v13*vec3(f14))));
+	v68.xyz = v73;
+	highp float f74;
+	f74 = h70;
+	highp float f75;
+	f75 = h70;
+	vec3 v76;
+	v76.xyz = (vec3((f75+(-(f74*f14))))+(v13*vec3(f14)));
+	v69.xyz = v76;
+	vec3 v77;
+	vec2 v78;
+	vec4 v79;
+	float h80;
+	h80 = f15;
+	v79.xyzw = ((vec4(h80)*vec4(-1.000000e+00,-2.750000e-02,-5.720000e-01,2.200000e-02))+vec4(1.000000e+00,4.250000e-02,1.040000e+00,-4.000000e-02));
+	vec2 v81;
+	highp vec3 v82;
+	v82.xyz = v31;
+	highp vec3 v83;
+	v83.xyz = v24;
+	float h84;
+	h84 = max(dot(v82,v83),0.000000e+00);
+	v81.xy = ((vec2(-1.040000e+00,1.040000e+00)*vec2(((min((v79.x*v79.x),exp2((-9.280000e+00*h84)))*v79.x)+v79.y)))+v79.zw);
+	v78.xy = v81;
+	v78.y = (v81.y*clamp((5.000000e+01*v69.y),0.000000e+00,1.000000e+00));
+	v77.xyz = ((v69*v81.xxx)+v78.yyy);
+	v12.xyz = vec3(0.000000e+00,0.000000e+00,0.000000e+00);
+	h11 = 1.000000e+00;
+	if (bool(i1))
+	{
+		highp vec2 v85;
+		v85.xy = v21.xy;
+		highp float f86;
+		f86 = v21.w;
+		highp vec4 v87;
+		highp vec4 v88;
+		highp float f89;
+		float h90;
+		h90 = 1.000000e+00;
+		highp float f91;
+		f91 = pc3_m[1].w;
+		f89 = f91;
+		highp vec4 v92;
+		v92.xyzw = pc3_m[2];
+		v88.xyzw = v92;
+		v87.xyzw = vec4(0.000000e+00,0.000000e+00,0.000000e+00,0.000000e+00);
+		highp float f93;
+		f93 = pc3_m[4].x;
+		if ((v21.w<f93))
+		{
+			highp vec4 v94;
+			v94.w = 1.000000e+00;
+			v94.x = v85.x;
+			v94.y = v85.y;
+			v94.z = f86;
+			v87.xyzw = (pc3_h[3]+((pc3_h[2]*v94.zzzz)+((pc3_h[1]*v94.yyyy)+(pc3_h[0]*v85.xxxx))));
+		}
+		else
+		{
+			highp float f95;
+			f95 = pc3_m[4].y;
+			if ((f86<f95))
+			{
+				highp vec4 v96;
+				v96.w = 1.000000e+00;
+				v96.x = v85.x;
+				v96.y = v85.y;
+				v96.z = f86;
+				v87.xyzw = (pc3_h[7]+((pc3_h[6]*v96.zzzz)+((pc3_h[5]*v96.yyyy)+(pc3_h[4]*v85.xxxx))));
+			}
+		}
+		if ((v87.z>0.000000e+00))
+		{
+			highp float f97;
+			f97 = min(v87.z,9.999900e-01);
+			highp vec2 v98;
+			v98.xy = (v87.xy*v88.xy);
+			highp vec2 v99;
+			v99.xy = fract(v98);
+			highp vec2 v100;
+			v100.xy = (vec2(-5.000000e-01,-5.000000e-01)+floor(v98));
+			highp vec3 v101;
+			highp float f102;
+			f102 = 0.000000e+00;
+			highp float f103;
+			f103 = textureLod(ps1,(v100*v88.zw),f102).x;
+			v101.x = f103;
+			highp float f104;
+			f104 = 0.000000e+00;
+			highp float f105;
+			f105 = textureLod(ps1,((v100+vec2(1.000000e+00,0.000000e+00))*v88.zw),f104).x;
+			v101.y = f105;
+			highp float f106;
+			f106 = 0.000000e+00;
+			highp float f107;
+			f107 = textureLod(ps1,((v100+vec2(2.000000e+00,0.000000e+00))*v88.zw),f106).x;
+			v101.z = f107;
+			highp vec3 v108;
+			v108.xyz = clamp(((v101*vec3(f89))+(-vec3(((f97*f89)+-1.000000e+00)))),vec3(0.000000e+00,0.000000e+00,0.000000e+00),vec3(1.000000e+00,1.000000e+00,1.000000e+00));
+			v101.xyz = v108;
+			highp vec3 v109;
+			highp float f110;
+			f110 = 0.000000e+00;
+			highp float f111;
+			f111 = textureLod(ps1,((v100+vec2(0.000000e+00,1.000000e+00))*v88.zw),f110).x;
+			v109.x = f111;
+			highp float f112;
+			f112 = 0.000000e+00;
+			highp float f113;
+			f113 = textureLod(ps1,((v100+vec2(1.000000e+00,1.000000e+00))*v88.zw),f112).x;
+			v109.y = f113;
+			highp float f114;
+			f114 = 0.000000e+00;
+			highp float f115;
+			f115 = textureLod(ps1,((v100+vec2(2.000000e+00,1.000000e+00))*v88.zw),f114).x;
+			v109.z = f115;
+			highp vec3 v116;
+			v116.xyz = clamp(((v109*vec3(f89))+(-vec3(((f97*f89)+-1.000000e+00)))),vec3(0.000000e+00,0.000000e+00,0.000000e+00),vec3(1.000000e+00,1.000000e+00,1.000000e+00));
+			v109.xyz = v116;
+			highp vec3 v117;
+			highp float f118;
+			f118 = 0.000000e+00;
+			highp float f119;
+			f119 = textureLod(ps1,((v100+vec2(0.000000e+00,2.000000e+00))*v88.zw),f118).x;
+			v117.x = f119;
+			highp float f120;
+			f120 = 0.000000e+00;
+			highp float f121;
+			f121 = textureLod(ps1,((v100+vec2(1.000000e+00,2.000000e+00))*v88.zw),f120).x;
+			v117.y = f121;
+			highp float f122;
+			f122 = 0.000000e+00;
+			highp float f123;
+			f123 = textureLod(ps1,((v100+vec2(2.000000e+00,2.000000e+00))*v88.zw),f122).x;
+			v117.z = f123;
+			highp vec3 v124;
+			v124.xyz = clamp(((v117*vec3(f89))+(-vec3(((f97*f89)+-1.000000e+00)))),vec3(0.000000e+00,0.000000e+00,0.000000e+00),vec3(1.000000e+00,1.000000e+00,1.000000e+00));
+			v117.xyz = v124;
+			highp vec3 v125;
+			v125.x = (v108.x*(1.000000e+00+(-v99.x)));
+			v125.y = (v116.x*(1.000000e+00+(-v99.x)));
+			v125.z = (v124.x*(1.000000e+00+(-v99.x)));
+			v125.x = (v125.x+v108.y);
+			v125.y = (v125.y+v116.y);
+			v125.z = (v125.z+v124.y);
+			v125.x = (v125.x+(v108.z*v99.x));
+			v125.y = (v125.y+(v116.z*v99.x));
+			v125.z = (v125.z+(v124.z*v99.x));
+			vec3 v126;
+			v126.y = 1.000000e+00;
+			float h127;
+			h127 = (1.000000e+00+(-v99.y));
+			v126.x = h127;
+			float h128;
+			h128 = v99.y;
+			v126.z = h128;
+			highp float f129;
+			highp float f130;
+			f130 = pc3_m[3].x;
+			highp float f131;
+			f131 = pc3_m[3].y;
+			f129 = clamp(((f86*f130)+f131),0.000000e+00,1.000000e+00);
+			highp vec3 v132;
+			v132.xyz = v126;
+			float h133;
+			h133 = mix(clamp((2.500000e-01*dot(v125,v132)),0.000000e+00,1.000000e+00),1.000000e+00,(f129*f129));
+			h90 = h133;
+		}
+		h11 = min(h90,1.000000e+00);
+	}
+	float h134;
+	h134 = max(0.000000e+00,dot(v31,pc3_m[1].xyz));
+	float h135;
+	float h136;
+	h136 = f15;
+	h135 = h136;
+	highp float f137;
+	highp float f138;
+	f138 = max(0.000000e+00,dot(v31,normalize((v24+pc3_m[1].xyz))));
+	f137 = f138;
+	float h139;
+	h139 = (h135*h135);
+	float h140;
+	highp float f141;
+	f141 = h139;
+	float h142;
+	h142 = (f137*f141);
+	h140 = h142;
+	float h143;
+	highp float f144;
+	f144 = (h140*h140);
+	highp float f145;
+	f145 = h139;
+	float h146;
+	h146 = (f145/((1.000000e+00+(-(f137*f137)))+f144));
+	h143 = h146;
+	vec3 v147;
+	v147.xyz = ((vec3(h11)*pc3_m[0].xyz)*((vec3(h134)*v68)+((v77*vec3((h134*(((h135*2.500000e-01)+2.500000e-01)*min((h143*h143),2.048000e+03)))))*pc3_m[3].zzz)));
+	v12.xyz = v147;
+	float h148;
+	float h149;
+	h149 = f15;
+	h148 = h149;
+	float h150;
+	float h151;
+	h151 = pc8_h[0].z;
+	h150 = h151;
+	vec4 v152;
+	v152.xyzw = vec4(0.000000e+00,0.000000e+00,0.000000e+00,1.000000e+00);
+	float h153;
+	float h154;
+	h154 = float((pc8_h[0].y>0.000000e+00));
+	h153 = h154;
+	if (bool(h153))
+	{
+		float h155;
+		h155 = pc8_h[0].y;
+		highp float f156;
+		f156 = ((h155+-1.000000e+00)+(-(1.000000e+00+(-(1.200000e+00*log2(max(h148,1.000000e-03)))))));
+		highp vec3 v157;
+		v157.xyz = textureLod(ps0,v35,f156).xyz;
+		highp float f158;
+		f158 = 1.000000e+00;
+		vec3 v159;
+		v159.xyz = ((v157*pc0_h[6].xyz)*vec3(f158));
+		v152.xyz = v159;
+	}
+	else
+	{
+		vec4 v160;
+		float h161;
+		h161 = f3;
+		highp float f162;
+		f162 = ((h161+-1.000000e+00)+(-(1.000000e+00+(-(1.200000e+00*log2(max(h148,1.000000e-03)))))));
+		v160.xyzw = textureLod(ps0,v35,f162);
+		vec3 v163;
+		v163.xyz = (v160.xyz*vec3((v160.w*h150)));
+		vec3 v164;
+		v164.xyz = (v163*v163);
+		v152.xyz = v164;
+		float h165;
+		h165 = pc8_h[0].x;
+		highp float f166;
+		f166 = (0.000000e+00/max(h165,1.000000e-04));
+		highp float f167;
+		f167 = h148;
+		float h168;
+		h168 = min(f166,v2.z);
+		float h169;
+		h169 = smoothstep(0.000000e+00,1.000000e+00,clamp(((f167*v2.x)+v2.y),0.000000e+00,1.000000e+00));
+		v152.xyz = (v164*vec3(mix(1.000000e+00,h168,h169)));
+		vec3 v170;
+		v170.xyz = v4;
+		v152.xyz = (v152.xyz*v170);
+	}
+	vec3 v171;
+	v171.xyz = (v147+(v152.xyz*v77));
+	v12.xyz = v171;
+	vec3 v172;
+	v172.xyz = v171;
+	uint u173;
+	u173 = uint(pc7_h[3].w);
+	if ((((u173&1u)|2u)!=0u))
+	{
+		highp float f174;
+		highp vec3 v175;
+		v175.xyz = (pc7_h[0].xyz+(-v26));
+		highp float f176;
+		f176 = dot(v175,v175);
+		highp vec3 v177;
+		v177.xyz = (v175*vec3(inversesqrt(f176)));
+		float h178;
+		highp vec3 v179;
+		v179.xyz = v31;
+		float h180;
+		h180 = max(0.000000e+00,dot(v179,v177));
+		h178 = h180;
+		float h181;
+		highp vec3 v182;
+		v182.xyz = v24;
+		vec3 v183;
+		v183.xyz = normalize((v182+v177));
+		h181 = max(0.000000e+00,dot(v31,v183));
+		if ((pc7_h[1].w==0.000000e+00))
+		{
+			highp float f184;
+			f184 = (f176*(pc7_h[0].w*pc7_h[0].w));
+			highp float f185;
+			f185 = clamp((1.000000e+00+(-(f184*f184))),0.000000e+00,1.000000e+00);
+			f174 = ((1.0/((f176+1.000000e+00)))*(f185*f185));
+		}
+		else
+		{
+			highp vec3 v186;
+			v186.xyz = (v175*pc7_h[0].www);
+			f174 = pow((1.000000e+00+(-clamp(dot(v186,v186),0.000000e+00,1.000000e+00))),pc7_h[1].w);
+		}
+		float h187;
+		float h188;
+		h188 = f15;
+		h187 = h188;
+		highp float f189;
+		highp float f190;
+		f190 = h181;
+		f189 = f190;
+		float h191;
+		h191 = (h187*h187);
+		float h192;
+		highp float f193;
+		f193 = h191;
+		float h194;
+		h194 = (f189*f193);
+		h192 = h194;
+		float h195;
+		highp float f196;
+		f196 = (h192*h192);
+		highp float f197;
+		f197 = h191;
+		float h198;
+		h198 = (f197/((1.000000e+00+(-(f189*f189)))+f196));
+		h195 = h198;
+		highp float f199;
+		f199 = 3.141593e+00;
+		highp vec3 v200;
+		v200.xyz = (v77*vec3((h178*(((h187*2.500000e-01)+2.500000e-01)*min((h195*h195),2.048000e+03)))));
+		highp vec3 v201;
+		v201.xyz = (vec3(h178)*v68);
+		vec3 v202;
+		v202.xyz = min(vec3(6.500000e+04,6.500000e+04,6.500000e+04),(((vec3(f174)*pc7_h[1].xyz)*vec3((1.0/(f199))))*(v201+(v200*pc7_h[2].www))));
+		v172.xyz = (v171+v202);
+	}
+	v12.xyz = v172;
+	if ((i0>1))
+	{
+		vec3 v203;
+		v203.xyz = v172;
+		uint u204;
+		u204 = uint(pc6_h[3].w);
+		if ((((u204&1u)|2u)!=0u))
+		{
+			highp float f205;
+			highp vec3 v206;
+			v206.xyz = (pc6_h[0].xyz+(-v26));
+			highp float f207;
+			f207 = dot(v206,v206);
+			highp vec3 v208;
+			v208.xyz = (v206*vec3(inversesqrt(f207)));
+			float h209;
+			highp vec3 v210;
+			v210.xyz = v31;
+			float h211;
+			h211 = max(0.000000e+00,dot(v210,v208));
+			h209 = h211;
+			float h212;
+			highp vec3 v213;
+			v213.xyz = v24;
+			vec3 v214;
+			v214.xyz = normalize((v213+v208));
+			h212 = max(0.000000e+00,dot(v31,v214));
+			if ((pc6_h[1].w==0.000000e+00))
+			{
+				highp float f215;
+				f215 = (f207*(pc6_h[0].w*pc6_h[0].w));
+				highp float f216;
+				f216 = clamp((1.000000e+00+(-(f215*f215))),0.000000e+00,1.000000e+00);
+				f205 = ((1.0/((f207+1.000000e+00)))*(f216*f216));
+			}
+			else
+			{
+				highp vec3 v217;
+				v217.xyz = (v206*pc6_h[0].www);
+				f205 = pow((1.000000e+00+(-clamp(dot(v217,v217),0.000000e+00,1.000000e+00))),pc6_h[1].w);
+			}
+			float h218;
+			float h219;
+			h219 = f15;
+			h218 = h219;
+			highp float f220;
+			highp float f221;
+			f221 = h212;
+			f220 = f221;
+			float h222;
+			h222 = (h218*h218);
+			float h223;
+			highp float f224;
+			f224 = h222;
+			float h225;
+			h225 = (f220*f224);
+			h223 = h225;
+			float h226;
+			highp float f227;
+			f227 = (h223*h223);
+			highp float f228;
+			f228 = h222;
+			float h229;
+			h229 = (f228/((1.000000e+00+(-(f220*f220)))+f227));
+			h226 = h229;
+			highp float f230;
+			f230 = 3.141593e+00;
+			highp vec3 v231;
+			v231.xyz = (v77*vec3((h209*(((h218*2.500000e-01)+2.500000e-01)*min((h226*h226),2.048000e+03)))));
+			highp vec3 v232;
+			v232.xyz = (vec3(h209)*v68);
+			vec3 v233;
+			v233.xyz = min(vec3(6.500000e+04,6.500000e+04,6.500000e+04),(((vec3(f205)*pc6_h[1].xyz)*vec3((1.0/(f230))))*(v232+(v231*pc6_h[2].www))));
+			v203.xyz = (v172+v233);
+		}
+		v12.xyz = v203;
+		if ((i0>2))
+		{
+			vec3 v234;
+			v234.xyz = v203;
+			uint u235;
+			u235 = uint(pc5_h[3].w);
+			if ((((u235&1u)|2u)!=0u))
+			{
+				highp float f236;
+				highp vec3 v237;
+				v237.xyz = (pc5_h[0].xyz+(-v26));
+				highp float f238;
+				f238 = dot(v237,v237);
+				highp vec3 v239;
+				v239.xyz = (v237*vec3(inversesqrt(f238)));
+				float h240;
+				highp vec3 v241;
+				v241.xyz = v31;
+				float h242;
+				h242 = max(0.000000e+00,dot(v241,v239));
+				h240 = h242;
+				float h243;
+				highp vec3 v244;
+				v244.xyz = v24;
+				vec3 v245;
+				v245.xyz = normalize((v244+v239));
+				h243 = max(0.000000e+00,dot(v31,v245));
+				if ((pc5_h[1].w==0.000000e+00))
+				{
+					highp float f246;
+					f246 = (f238*(pc5_h[0].w*pc5_h[0].w));
+					highp float f247;
+					f247 = clamp((1.000000e+00+(-(f246*f246))),0.000000e+00,1.000000e+00);
+					f236 = ((1.0/((f238+1.000000e+00)))*(f247*f247));
+				}
+				else
+				{
+					highp vec3 v248;
+					v248.xyz = (v237*pc5_h[0].www);
+					f236 = pow((1.000000e+00+(-clamp(dot(v248,v248),0.000000e+00,1.000000e+00))),pc5_h[1].w);
+				}
+				float h249;
+				float h250;
+				h250 = f15;
+				h249 = h250;
+				highp float f251;
+				highp float f252;
+				f252 = h243;
+				f251 = f252;
+				float h253;
+				h253 = (h249*h249);
+				float h254;
+				highp float f255;
+				f255 = h253;
+				float h256;
+				h256 = (f251*f255);
+				h254 = h256;
+				float h257;
+				highp float f258;
+				f258 = (h254*h254);
+				highp float f259;
+				f259 = h253;
+				float h260;
+				h260 = (f259/((1.000000e+00+(-(f251*f251)))+f258));
+				h257 = h260;
+				highp float f261;
+				f261 = 3.141593e+00;
+				highp vec3 v262;
+				v262.xyz = (v77*vec3((h240*(((h249*2.500000e-01)+2.500000e-01)*min((h257*h257),2.048000e+03)))));
+				highp vec3 v263;
+				v263.xyz = (vec3(h240)*v68);
+				vec3 v264;
+				v264.xyz = min(vec3(6.500000e+04,6.500000e+04,6.500000e+04),(((vec3(f236)*pc5_h[1].xyz)*vec3((1.0/(f261))))*(v263+(v262*pc5_h[2].www))));
+				v234.xyz = (v203+v264);
+			}
+			v12.xyz = v234;
+			if ((i0>3))
+			{
+				vec3 v265;
+				v265.xyz = v234;
+				uint u266;
+				u266 = uint(pc4_h[3].w);
+				if ((((u266&1u)|2u)!=0u))
+				{
+					highp float f267;
+					highp vec3 v268;
+					v268.xyz = (pc4_h[0].xyz+(-v26));
+					highp float f269;
+					f269 = dot(v268,v268);
+					highp vec3 v270;
+					v270.xyz = (v268*vec3(inversesqrt(f269)));
+					float h271;
+					highp vec3 v272;
+					v272.xyz = v31;
+					float h273;
+					h273 = max(0.000000e+00,dot(v272,v270));
+					h271 = h273;
+					float h274;
+					highp vec3 v275;
+					v275.xyz = v24;
+					vec3 v276;
+					v276.xyz = normalize((v275+v270));
+					h274 = max(0.000000e+00,dot(v31,v276));
+					if ((pc4_h[1].w==0.000000e+00))
+					{
+						highp float f277;
+						f277 = (f269*(pc4_h[0].w*pc4_h[0].w));
+						highp float f278;
+						f278 = clamp((1.000000e+00+(-(f277*f277))),0.000000e+00,1.000000e+00);
+						f267 = ((1.0/((f269+1.000000e+00)))*(f278*f278));
+					}
+					else
+					{
+						highp vec3 v279;
+						v279.xyz = (v268*pc4_h[0].www);
+						f267 = pow((1.000000e+00+(-clamp(dot(v279,v279),0.000000e+00,1.000000e+00))),pc4_h[1].w);
+					}
+					float h280;
+					float h281;
+					h281 = f15;
+					h280 = h281;
+					highp float f282;
+					highp float f283;
+					f283 = h274;
+					f282 = f283;
+					float h284;
+					h284 = (h280*h280);
+					float h285;
+					highp float f286;
+					f286 = h284;
+					float h287;
+					h287 = (f282*f286);
+					h285 = h287;
+					float h288;
+					highp float f289;
+					f289 = (h285*h285);
+					highp float f290;
+					f290 = h284;
+					float h291;
+					h291 = (f290/((1.000000e+00+(-(f282*f282)))+f289));
+					h288 = h291;
+					highp float f292;
+					f292 = 3.141593e+00;
+					highp vec3 v293;
+					v293.xyz = (v77*vec3((h271*(((h280*2.500000e-01)+2.500000e-01)*min((h288*h288),2.048000e+03)))));
+					highp vec3 v294;
+					v294.xyz = (vec3(h271)*v68);
+					vec3 v295;
+					v295.xyz = min(vec3(6.500000e+04,6.500000e+04,6.500000e+04),(((vec3(f267)*pc4_h[1].xyz)*vec3((1.0/(f292))))*(v294+(v293*pc4_h[2].www))));
+					v265.xyz = (v234+v295);
+				}
+				v12.xyz = v265;
+			}
+		}
+	}
+	vec3 v296;
+	v296.xyz = (v12+max(v47,vec3(0.000000e+00,0.000000e+00,0.000000e+00)));
+	vec4 v297;
+	v297.xyz = v296;
+	v297.w = h67;
+	v10.xyzw = v297;
+	float h298;
+	h298 = f6;
+	v10.xyz = (v296*vec3(h298));
+	out_Target0.xyzw = v10;
+}
+
